@@ -4,7 +4,7 @@ from src.models import Base
 
 
 # Database connection setup
-DATABASE_URL = "sqlite:///habit_tracker.sqlite"
+DATABASE_URL = "sqlite:///habit_tracker.sqlite3"
 engine = create_engine(DATABASE_URL)
 Session = sessionmaker(bind=engine)
 session = Session()
