@@ -1,4 +1,4 @@
-from src.db import init_db
+from src.db import initialize_db
 
 # set up database
-init_db()
+initialize_db()

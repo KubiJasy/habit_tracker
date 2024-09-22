@@ -7,7 +7,7 @@ Base = declarative_base()
 
 
 class Habit(Base):
-    __tablename__ = 'habit'
+    __tablename__ = 'habits'
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
@@ -26,10 +26,10 @@ class Habit(Base):
 
 
 class Task(Base):
-    __tablename__ = 'task'
+    __tablename__ = 'tasks'
 
     id = Column(Integer, primary_key=True)
-    habit_id = Column(Integer, ForeignKey('habit.id'))
+    habit_id = Column(Integer, ForeignKey('habits.id'))
     completed = Column(Boolean)
     completed_on = Column(DateTime)
 
