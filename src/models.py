@@ -9,7 +9,7 @@ Base = declarative_base()
 class Habit(Base):
     __tablename__ = 'habits'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String)
     periodicity = Column(String)
     current_streak = Column(Integer)
@@ -28,13 +28,14 @@ class Habit(Base):
 class Task(Base):
     __tablename__ = 'tasks'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     habit_id = Column(Integer, ForeignKey('habits.id'))
     completed = Column(Boolean)
     completed_on = Column(DateTime)
+    expected_completion_by = Column(DateTime)
 
     created_at = Column(DateTime)
     updated_at = Column(DateTime)
 
     # Many-to-One relationship with Habit
-    habit = relationship('Habit', back_populates='tasks')
+    habits = relationship('Habit', back_populates='tasks')
