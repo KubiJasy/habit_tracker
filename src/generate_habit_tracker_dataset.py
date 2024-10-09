@@ -10,8 +10,8 @@ save_habits_to_csv(habits_data, "sample_habits.csv")
 print(
     f"Generated {len(habits_data)} rows of habit data.")
 
-# Generating sample tasks data for each habit
 
+# Generating sample tasks data for each habit
 # Read habit data from a CSV file
 with open("sample_habits.csv", "r") as csvfile:
     reader = csv.reader(csvfile)
