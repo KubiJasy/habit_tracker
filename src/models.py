@@ -20,7 +20,8 @@ class Habit(Base):
     updated_at = Column(DateTime)
 
     # One-to-Many relationship with Task
-    tasks = relationship('Task', back_populates='habits')
+    tasks = relationship('Task', back_populates='habits',
+                         cascade="all, delete, delete-orphan")
 
 # Task model
 

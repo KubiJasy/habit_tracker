@@ -7,7 +7,10 @@ from datetime import datetime, timedelta
 def validate_habit_data(filename):
     with open(filename, 'r') as csvfile:
         reader = csv.DictReader(csvfile)
-        current_date = datetime(2024, 9, 24, 23, 59, 59)
+        # current_date = datetime(2024, 9, 24, 23, 59, 59)
+        # ! Adjust current time conf when necessary
+        current_date = datetime.now().replace(
+            hour=23, minute=59, second=59, microsecond=0) - timedelta(days=1)
         # Start at 2 to account for header row
         for row_number, row in enumerate(reader, start=2):
             try:

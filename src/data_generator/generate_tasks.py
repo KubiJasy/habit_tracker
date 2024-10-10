@@ -31,15 +31,27 @@ def generate_task_data(habit_data):
         if periodicity not in ["daily", "weekly"]:
             continue  # Skip invalid periodicity
 
+        # Set the reference date to be the current datetime set a day back
+        reference_date = datetime.datetime.now().replace(hour=23, minute=59, second=59, microsecond=0) - timedelta(days=1)
+
         # Generate potential completion dates based on periodicity and created_at
+        # ! Adjust current time conf when necessary
+        # potential_completions = []
+        # if periodicity == "daily":
+        #     for i in range(((datetime.datetime.now() - timedelta(days=1)) - created_at).days + 1):
+        #         potential_completions.append(created_at + timedelta(days=i))
+        # elif periodicity == "weekly":
+        #     for i in range(((datetime.datetime.now() - timedelta(days=1)) - created_at).days // 7 + 1):
+        #         potential_completions.append(
+        #             created_at + timedelta(days=i * 7))
+
         potential_completions = []
         if periodicity == "daily":
-            for i in range((datetime.datetime.now() - created_at).days + 1):
+            for i in range((reference_date - created_at).days + 1):
                 potential_completions.append(created_at + timedelta(days=i))
         elif periodicity == "weekly":
-            for i in range((datetime.datetime.now() - created_at).days // 7 + 1):
-                potential_completions.append(
-                    created_at + timedelta(days=i * 7))
+            for i in range((reference_date - created_at).days // 7 + 1):
+                potential_completions.append(created_at + timedelta(days=i * 7))
 
         # Mark the most recent consecutive completions based on current streak
         completed_tasks = []

@@ -58,7 +58,11 @@ def generate_habits_data(num_rows):
     start_date = datetime(2024, 8, 1)
     # Current date in the scenario
     # Todo: Make sure to update to current datetime when submitting the work
-    end_date = datetime(2024, 9, 24, 23, 59, 59)
+    # ! Adjust current time conf when necessary
+    # this is to ensure that whenever the code is run, daily tasks will be just due for checking off and weekly tasks will be current as well
+    end_date = datetime.now().replace(hour=23, minute=59, second=59,
+                                      microsecond=0) - timedelta(days=1)
+    print(end_date)
 
     data = []
 

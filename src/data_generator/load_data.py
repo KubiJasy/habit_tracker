@@ -1,8 +1,9 @@
 import pandas as pd
-from db import session
-from models import Habit, Task
-from validate_sample_habits import validate_habit_data
-from validate_sample_tasks import validate_task_entries_from_csv
+from src.db import session
+from src.models import Habit, Task
+from .generate_habit_tracker_dataset import generate_habit_tracker_dataset
+from .validate_sample_habits import validate_habit_data
+from .validate_sample_tasks import validate_task_entries_from_csv
 
 
 def load_habits_from_csv(csv_file):
@@ -47,14 +48,28 @@ def load_tasks_from_csv(csv_file):
     print("Tasks loaded successfully.")
 
 
-# Validating that the generated dataset is consistent
-habits_valid, habits_validation_report = validate_habit_data(
-    "sample_habits.csv")
-tasks_valid, tasks_validation_report = validate_task_entries_from_csv(
-    "sample_tasks.csv", "sample_habits.csv")
+def load_data():
+    # delete existing data if any
+    session.query(Habit).delete()
+    session.query(Task).delete()
+    session.commit()
+    session.close()
 
-print(habits_validation_report, tasks_validation_report)
+    # generating habit data
+    generate_habit_tracker_dataset()
 
-if habits_valid and tasks_valid:
-    load_habits_from_csv("sample_habits.csv")
-    load_tasks_from_csv("sample_tasks.csv")
+    # Validating that the generated dataset is consistent
+    habits_valid, habits_validation_report = validate_habit_data(
+        "sample_habits.csv")
+    tasks_valid, tasks_validation_report = validate_task_entries_from_csv(
+        "sample_tasks.csv", "sample_habits.csv")
+
+    print(habits_validation_report, tasks_validation_report)
+
+    # populating the database with generated data
+    if habits_valid and tasks_valid:
+        load_habits_from_csv("sample_habits.csv")
+        load_tasks_from_csv("sample_tasks.csv")
+    else:
+        print("Please run the script again, invalid data generated!!")
+        exit()
