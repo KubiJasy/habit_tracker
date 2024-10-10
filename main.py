@@ -10,8 +10,10 @@ load_dotenv()
 # set up database
 initialize_db()
 
+# print(type(os.getenv("LOAD_DATA")))
+
 # load sample habit data
-load_data() if bool(os.getenv("LOAD_DATA")) else None
+load_data() if os.getenv("LOAD_DATA") == "True" else None
 
 # run the cli
 cli = HabitTrackerCLI()

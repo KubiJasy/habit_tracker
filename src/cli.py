@@ -100,7 +100,7 @@ class HabitTrackerCLI:
             return
         selected_index = int(selected_habit_name.split('.')[0]) - 1
         selected_habit = habits[selected_index]
-        print(f"\nID: {selected_habit.id}\nName: {selected_habit.name}\nPeriodicity: {selected_habit.periodicity}\nNext Completion Date: {selected_habit.next_completion_date.strftime('%A, %B %d, %Y')}\nCreated On: {selected_habit.created_at.strftime('%A, %B %d, %Y')}\n")
+        print(f"\nID: {selected_habit.id}\nName: {selected_habit.name}\nPeriodicity: {selected_habit.periodicity}\nCreated On: {selected_habit.created_at.strftime('%A, %B %d, %Y')}\nNext Completion Date: {selected_habit.next_completion_date.strftime('%A, %B %d, %Y')}\n")
 
         while True:
             action = questionary.select(
