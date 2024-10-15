@@ -51,11 +51,13 @@ class Habit:
                     # Calculate the difference in days to get the next closest matching weekday
                     days_difference = (
                         next_completion_weekday - end_of_day_weekday + 7) % 7
+
                     next_closest_date = end_of_day + \
                         timedelta(days=days_difference)
 
-                    # Check if the next closest date falls in the same week as the end_of_day
-                    if next_closest_date <= end_of_day + timedelta(days=6):
+                    # Check if the next closest date falls in the same week as the end_of_day (a week is Monday to Sunday (0-6))
+                    if next_closest_date <= end_of_day + timedelta(days=6-end_of_day_weekday):
+                        # meaning that the time completion time had elapsed, but the user went ahead to complete the habit in the current week, hence the following week should be the next completion date
                         return next_closest_date + timedelta(weeks=1)
                     else:
                         return next_closest_date
@@ -88,7 +90,7 @@ class Habit:
                 self.longest_streak = self.current_streak
         else:
             # Person missed the expected completion date
-            self.current_streak = 0
+            self.current_streak = 1
 
         latest_task.completed = True
         latest_task.completed_on = now
@@ -194,9 +196,12 @@ class HabitManager:
             '__') and not callable(v) and not k.startswith('_')}
 
         # removing uneccessary attrs
-        del habit_attrs["created_at"]
-        del habit_attrs["updated_at"]
-        del habit_attrs["id"]
+        if habit_attrs.get("created_at"):
+            del habit_attrs["created_at"]
+        if habit_attrs.get("updated_at"):
+            del habit_attrs["updated_at"]
+        if habit_attrs.get("id"):
+            del habit_attrs["id"]
 
         if habit:
             habit_obj = Habit(**habit_attrs)

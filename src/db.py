@@ -23,14 +23,14 @@ class StorageComponent:
     Storage component responsible for managing database interactions.
     """
 
-    def __init__(self):
+    def __init__(self, engine=engine, session=session):
         self.engine = engine
         self.session = session
 
     def load_habits(self, name=None, periodicity=None, current_streak=None, longest_streak=None):
         """
         Load habits from the database with optional filters.
-        
+
         :param name: Optional filter by habit name (partial or full match).
         :param periodicity: Optional filter by periodicity (e.g., 'daily', 'weekly').
         :param current_streak: Optional filter by current streak value.
@@ -41,7 +41,8 @@ class StorageComponent:
 
         # Apply filters based on provided arguments
         if name:
-            query = query.filter(Habit.name.like(f'%{name}%'))  # Partial match for name
+            # Partial match for name
+            query = query.filter(Habit.name.like(f'%{name}%'))
         if periodicity:
             query = query.filter(Habit.periodicity == periodicity)
         if current_streak is not None:

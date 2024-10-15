@@ -26,7 +26,7 @@ class Task:
         """
         self.habit_id = habit_id
         self.completed = True
-        self.completed_on = datetime.now()
+        self.completed_on = datetime.datetime.now()
 
     def set_completed_on(self, date):
         """
@@ -47,6 +47,11 @@ class Task:
         :return: The expected completion date.
         """
         now = datetime.datetime.now()
+
+        # raise a value error if the wrong periodicity is entered
+        if habit_periodicity not in ['daily', 'weekly']:
+            raise ValueError(
+                "Unsupported periodicity. Use 'daily' or 'weekly'.")
 
         # If there is no last task completion date, the expected completion date is today at the end of the day
         if not last_task_completion_date:
@@ -72,15 +77,12 @@ class Task:
                 next_closest_date = now + \
                     datetime.timedelta(days=days_difference)
 
-                # If the closest date is within the same week as today, add 1 week
-                if next_closest_date <= now + datetime.timedelta(days=6):
+                # If the closest date is within the same week as the current date, choose that closest date
+                if next_closest_date <= now + datetime.timedelta(days=6 - now_weekday):
+                    # meaning that the time completion time had elapsed, but the user went ahead to complete the habit in the current week, hence the following week should be the next completion date
                     return (next_closest_date + datetime.timedelta(weeks=1)).replace(hour=23, minute=59, second=59, microsecond=0)
                 else:
                     return next_closest_date.replace(hour=23, minute=59, second=59, microsecond=0)
-
-        else:
-            raise ValueError(
-                "Unsupported periodicity. Use 'daily' or 'weekly'.")
 
 
 class TaskManager:
