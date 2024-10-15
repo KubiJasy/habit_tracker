@@ -4,6 +4,7 @@ from .habits import HabitManager
 from .tasks import TaskManager
 from .db import StorageComponent
 from .analytics import list_habits, longest_streak_for_given_habit, longest_streak_from_habits, list_habits_periodicity
+from .generate_gif import main
 
 
 class HabitTrackerCLI:
@@ -194,6 +195,7 @@ class HabitTrackerCLI:
         print(result)
 
     def run(self):
+        main()
         while True:
             action = questionary.select(
                 "What would you like to do?",
